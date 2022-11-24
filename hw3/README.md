@@ -4,7 +4,7 @@ chess.c
 
 ## This is subtitle
 
-DSA_HW2
+DSA_HW3
 
         src/
         chess.c
@@ -16,7 +16,7 @@ DSA_HW2
 -------------------------------------
 # Neural Network in C
 
-This is assignment 2
+This is assignment 3,using link list to finish loading and saving
 
 ## Compile & Run
 
