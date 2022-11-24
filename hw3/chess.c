@@ -98,11 +98,11 @@ struct node{
 typedef struct node NODE;
 NODE *list1 = NULL;
 NODE *list2 = NULL;
-void push(NODE*,char*); 
-/// @brief 
-/// @param  
-char* pop(NODE*,char*);
+void push(char*); 
+void push2(char*); 
 
+char* pop();
+char * pop2();
 
 
 ///////////////////////////////////
@@ -117,36 +117,77 @@ int isEmpty(){
 	}
 } 
 /*將指定的資料存入堆疊*/
-void push(NODE *list ,char* copyarray){
+void  push( char* copyarray){
         NODE *tmp;
 		tmp = (NODE*)malloc(sizeof(NODE));
-		
+		printf("in: %s\n",copyarray);
         tmp->stackword=copyarray;
-        tmp->next = list;
-        list = tmp;
+        if(list1 == NULL)
+        {tmp->next = NULL;printf("null\n");}
+        else
+        {tmp->next = list1;printf("list\n");}
+
+        list1 = tmp;
+        
+        printf("indep: %s\n",copyarray);
+
+	
+ 
+} 
+void  push2( char* copyarray){
+        NODE *tmp;
+		tmp = (NODE*)malloc(sizeof(NODE));
+		printf("in: %s\n",copyarray);
+        tmp->stackword=copyarray;
+        if(list2 == NULL)
+        {tmp->next = NULL;printf("null\n");}
+        else
+        {tmp->next = list2;printf("list\n");}
+
+        list2 = tmp;
+        
+        printf("indep: %s\n",copyarray);
+
 	
  
 } 
 
-
 /*從堆疊取出資料*/
-char* pop(NODE *list,char* copyarray ){
+char* pop( ){
 	
-    char* dataoutcopy;
-	if(list == NULL){
+    char* copyarray;
+	if(list1 == NULL){
 		printf("堆疊已空\n");
 	}else{
         NODE *tmp;
 		tmp = (NODE*)malloc(sizeof(NODE));
-        tmp = list;
-        list = list->next ;
+        tmp = list1;
+        list1 = list1->next ;
         
         copyarray=tmp->stackword;
         free(tmp);
+        printf("pop: %s\n",copyarray);
 		return copyarray;
 	}
 }
 
+char* pop2( ){
+	
+    char* copyarray;
+	if(list2 == NULL){
+		printf("堆疊已空\n");
+	}else{
+        NODE *tmp;
+		tmp = (NODE*)malloc(sizeof(NODE));
+        tmp = list2;
+        list2 = list2->next ;
+        
+        copyarray=tmp->stackword;
+        free(tmp);
+        printf("pop2: %s\n",copyarray);
+		return copyarray;
+	}
+}
 /*
 static void stdin_cb (EV_P_ ev_io *w, int revents){
     ev_timer_stop (loop, &timeout_watcherx);	
@@ -211,6 +252,11 @@ int main()
     while (gameOverSign) {
         isStandard = 1;
         char chxi,chyi,chxj,chyj;
+        char *pchxi = malloc(sizeof(char));
+        char *pchyi = malloc(sizeof(char));
+        char *pchxj = malloc(sizeof(char));
+        char *pchyj = malloc(sizeof(char));
+
         turn *= (-1);//雙方交替下棋
         switch (turn) {
             case 1:
@@ -221,15 +267,28 @@ int main()
                     /*ev_timer_start(loop, &timeout_watchery);//總時間在哪*/
                     printf("您將紅棋從%d %d到%d %d\n",yi,xi,yj,xj);
                     
-                    chxi= (char)xi;chyi= (char)yi;chxj= (char)xj;chyj= (char)yj;
-                    push(list1,&chxi);
-                    push(list1,&chyi);
-                    push(list1,&chxj);
-                    push(list1,&chyj);
-                    push(list1,copyarray);
-                    //printf("top = %d \n",top);
+                    chxi= xi+'0';*pchxi = chxi;
+                    chyi= yi+'0';*pchyi = chyi;
+                    chxj= xj+'0';*pchxj = chxj;
+                    chyj= yj+'0';*pchyj = chyj;
+                    printf("ind: %c\n",chxi);
+                    push(pchxi);
+                    push(pchyi);
+                    push(pchxj);
+                    push(pchyj);
+                    push(copyarray);
+                    /*push2(pchxi);
+                    push2(pchyi);
+                    push2(pchxj);
+                    push2(pchyj);
+                    push2(copyarray);*/
+                    printf("top = %d \n",top);
+                    
+                    printf("list2。\n");
+                    top = top + 1;
                     saveMove();
                     againmove(); 
+                    
                         turn = (restartagain) ? (turn*-1) : turn;
 
                      
@@ -245,15 +304,28 @@ int main()
                     /*ev_timer_start(loop, &timeout_watcherx);*/
                     printf("您將藍棋從%d %d到%d %d\n",yi,xi,yj,xj);
                     
-                    chxi= (char)xi;chyi= (char)yi;chxj= (char)xj;chyj= (char)yj;
-                    push(list1,&chxi);
-                    push(list1,&chyi);
-                    push(list1,&chxj);
-                    push(list1,&chyj);
-                    push(list1,copyarray);
-                    //printf("top = %d \n",top);
+                    chxi= xi+'0';*pchxi = chxi;
+                    chyi= yi+'0';*pchyi = chyi;
+                    chxj= xj+'0';*pchxj = chxj;
+                    chyj= yj+'0';*pchyj = chyj;
+                    printf("ind: %c\n",chxi);
+                    push(pchxi);
+                    push(pchyi);
+                    push(pchxj);
+                    push(pchyj);
+                    push(copyarray);
+                    /*push2(pchxi);
+                    push2(pchyi);
+                    push2(pchxj);
+                    push2(pchyj);
+                    push2(copyarray);*/
+                    printf("top = %d \n",top);
+                    top = top + 1;
+                     
+                     printf("list2。\n");
                     saveMove();
                     againmove(); 
+                    
                         turn = (restartagain) ? (turn*-1) : turn;
                        
                     isStandard = 1;
@@ -308,20 +380,23 @@ void againmove()
     if(again == 'y'){
         restartagain =1;
         char *chaxi,*chayi,*chaxj,*chayj;
-        copyarray=pop(list1,copyarray);
-        chayj=pop(list1,chayj);
-        chaxj=pop(list1,chaxj);
-        chayi=pop(list1,chayi);
-        chaxi=pop(list1,chaxi);
-
-        xi = (int)(*chaxi) - 48 ;
-        yi = (int)(*chayi) - 48 ;
-        xj = (int)(*chaxj) - 48 ;
-        yj = (int)(*chayj) - 48 ;
+        copyarray=pop();
+        chayj=pop();
+        chaxj=pop();
+        chayi=pop();
+        chaxi=pop();
+printf("chaxi: %s\n",chayj);
+        xi = (int)(*chaxj) - 48 ;
+        yi = (int)(*chayj) - 48 ;
+        xj = (int)(*chaxi) - 48 ;
+        yj = (int)(*chayi) - 48 ;
         //char *copy1 = array[xj][yj];
         array[xj][yj] = array[xi][yi];
         array[xi][yi] = copyarray;
+        top = top - 1;
+        
         printChessboard();
+        
     }    
     else if(again == 'n'){
             restartagain =0;
@@ -344,13 +419,14 @@ void readMove()
         //list1->stackword = malloc(100); 
         char *chaxi,*chayi,*chaxj,*chayj;
         fscanf(fp_r, "%s %s %s %s %s\n", chaxi,chayi,chaxj, chayj,copyarray);
-        push(list1,chaxi);
-        push(list1,chayi);
-        push(list1,chaxj);
-        push(list1,chayj);
-        push(list1,copyarray);
+        push(chaxi);
+        push(chayi);
+        push(chaxj);
+        push(chayj);
+        push(copyarray);
         //printf("stackword = %s \n",list1->stackword);
         }
+        
         printf("top = %d \n",top);
         printf("讀檔成功。\n");
         fclose(fp_r);
@@ -384,15 +460,20 @@ void saveMove()
             push(&list2,&chyj);
             push(&list2,copyarray);
         }*/
+         list2 = list1;
         for(int i = 0 ; i < top + 1 ; i++) {
             char *chaxi,*chayi,*chaxj,*chayj;
-            copyarray=pop(list1,copyarray);
-            chayj=pop(list1,chayj);
-            chaxj=pop(list1,chaxj);
-            chayi=pop(list1,chayi);
-            chaxi=pop(list1,chaxi);
+            copyarray=list2->stackword;
+            copyarray=list2->stackword;
+            chayj=list2->next->stackword;
+            chaxj=list2->next->next->stackword;
+            chayi=list2->next->next->next->stackword;
+            chaxi=list2->next->next->next->next->stackword;
+            list2 =list2->next->next->next->next;
+            printf("save: %s\n",copyarray);
             fprintf(fp_w, "%s %s %s %s %s\n",chaxi,chayi,chaxj, chayj,copyarray);
         }
+        
         printf("存檔成功。\n");
         fclose(fp_w);
         }
@@ -406,11 +487,11 @@ void printMove()
     if(instruct == 'f' && printstep < top + 1){
         //printf("請f。\n");
         char *chaxi,*chayi,*chaxj,*chayj;
-            copyarray=pop(list1,copyarray);
-            chayj=pop(list1,chayj);
-            chaxj=pop(list1,chaxj);
-            chayi=pop(list1,chayi);
-            chaxi=pop(list1,chaxi);
+            copyarray=pop(list1);
+            chayj=pop(list1);
+            chaxj=pop(list1);
+            chayi=pop(list1);
+            chaxi=pop(list1);
             xi = (int)(*chaxi) - 48 ;
         yi = (int)(*chayi) - 48 ;
         xj = (int)(*chaxj) - 48 ;
